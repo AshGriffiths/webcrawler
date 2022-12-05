@@ -13,6 +13,8 @@ require('yargs').command('$0 [url]', 'Crawl websites following links, starting f
         console.error("Please provide a base url. Call with help to see usage information.");
         process.exit();
     }
-    console.log(`Starting crawl at: ${argv.url}`);
-    await crawlPage(argv.url)
+    const baseURL = argv.url
+    console.log(`Starting crawl at: ${baseURL}`);
+    const pages = await crawlPage(baseURL, baseURL, {});
+    console.log(pages);
 }).argv;

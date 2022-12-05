@@ -31,23 +31,43 @@ const getURLsFromHTML = (html, baseURL) => {
     return urls
 }
 
-const crawlPage = async (url) => {
-    console.log(`crawling ${url}`);
+const crawlPage = async (baseURL, currentURL, pages) => {
+    const currentUrlObj = new URL(currentURL);
+    const baseUrlObj = new URL(baseURL);
+    // Leaving base domain, so just stop
+    if (currentUrlObj.hostname !== baseUrlObj.hostname){
+        return pages;
+    }
+    const normalizedURL = normalizeURL(currentURL);
+    // Already visited?
+    if (pages[normalizedURL] > 0) {
+        pages[normalizedURL] ++;
+        return pages;
+    }
+    // New link on the domain
+    pages[normalizedURL] = 1;
+    console.log(`crawling ${currentURL}`);
+    let html = '';
     try {
-        const resp = await fetch(url)
+        const resp = await fetch(currentURL)
         if (resp.status > 399) {
             console.log(`Got HTTP error, status code: ${resp.status}`);
-            return;
+            return pages;
         }
         const contentType = resp.headers.get('content-type')
         if (!contentType.includes('text/html')) {
             console.log(`Got non-html response: ${contentType}`);
-            return;
+            return pages;
         }
-        console.log(await resp.text());
+        html = await resp.text();
     } catch (err) {
         console.log(err.message);
     }
+    const nextURLs = getURLsFromHTML(html, baseURL);
+    for (const nextURL of nextURLs) {
+        pages = await crawlPage(baseURL, nextURL, pages);
+    }
+    return pages;
 };
 
 module.exports = {
