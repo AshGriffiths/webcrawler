@@ -1,0 +1,20 @@
+{
+  "name": "webcrawler",
+  "version": "0.1.0",
+  "description": "A basic web crawler for the boot.dev course",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AshGriffiths/webcrawler.git"
+  },
+  "author": "Ash Griffiths",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/AshGriffiths/webcrawler/issues"
+  },
+  "homepage": "https://github.com/AshGriffiths/webcrawler#readme"
+}
