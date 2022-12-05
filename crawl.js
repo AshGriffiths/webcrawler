@@ -18,13 +18,13 @@ const getURLsFromHTML = (html, baseURL) => {
             try {
                 urls.push(new URL(link.href, baseURL).href);
             } catch (err) {
-                console.log(`${err.message}: ${link.href}`);
+                console.error(`${err.message}: ${link.href}`);
             }
         } else {
             try {
                 urls.push(new URL(link.href).href);
             } catch (err) {
-                console.log(`${err.message}: ${link.href}`);
+                console.error(`${err.message}: ${link.href}`);
             }
         }
     }
@@ -51,17 +51,17 @@ const crawlPage = async (baseURL, currentURL, pages) => {
     try {
         const resp = await fetch(currentURL)
         if (resp.status > 399) {
-            console.log(`Got HTTP error, status code: ${resp.status}`);
+            console.error(`Got HTTP error, status code: ${resp.status}`);
             return pages;
         }
         const contentType = resp.headers.get('content-type')
         if (!contentType.includes('text/html')) {
-            console.log(`Got non-html response: ${contentType}`);
+            console.error(`Got non-html response: ${contentType}`);
             return pages;
         }
         html = await resp.text();
     } catch (err) {
-        console.log(err.message);
+        console.error(err.message);
     }
     const nextURLs = getURLsFromHTML(html, baseURL);
     for (const nextURL of nextURLs) {

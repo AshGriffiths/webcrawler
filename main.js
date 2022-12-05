@@ -1,4 +1,5 @@
 const { crawlPage } = require('./crawl');
+const { printReport } = require('./report');
 
 require('yargs').command('$0 [url]', 'Crawl websites following links, starting from the given website.', args => {
     args.positional('url', {
@@ -16,5 +17,5 @@ require('yargs').command('$0 [url]', 'Crawl websites following links, starting f
     const baseURL = argv.url
     console.log(`Starting crawl at: ${baseURL}`);
     const pages = await crawlPage(baseURL, baseURL, {});
-    console.log(pages);
+    printReport(pages);
 }).argv;
